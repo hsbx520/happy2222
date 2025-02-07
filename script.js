@@ -32,12 +32,12 @@ async function connectWallet() {
       return;
     }
 
-    // Connect to Solana
+    // Connect to Solana 主网
     await solana.connect();
     payer = { publicKey: solana.publicKey };
 
-    // 创建连接
-    connection = new solanaWeb3.Connection("https://api.devnet.solana.com", 'confirmed');
+    // 创建连接到主网
+    connection = new solanaWeb3.Connection("https://api.mainnet-beta.solana.com", 'confirmed');
 
     statusDisplay.textContent = `已连接钱包: ${payer.publicKey.toBase58()}`;
     connectWalletButton.textContent = '断开钱包';
@@ -93,11 +93,11 @@ mintButton.addEventListener('click', async () => {
       })
     );
 
-    // Get a recent blockhash
-    const { blockhash } = await connection.getLatestBlockhash();
+    // 获取最新的 blockhash，确保是主网的最新区块哈希
+    const { blockhash } = await connection.getLatestBlockhash('confirmed');
     transaction.recentBlockhash = blockhash;
 
-    // Sign transaction
+    // 设置手续费支付者
     transaction.feePayer = payer.publicKey;
 
     let signedTransaction;
