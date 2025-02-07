@@ -36,8 +36,8 @@ async function connectWallet() {
     await solana.connect();
     payer = { publicKey: solana.publicKey };
 
-    // 创建连接到主网
-    connection = new solanaWeb3.Connection("https://api.mainnet-beta.solana.com", 'confirmed');
+    // 使用 Ankr 提供的免费 RPC 服务
+    connection = new solanaWeb3.Connection("https://rpc.ankr.com/solana", 'confirmed');
 
     statusDisplay.textContent = `已连接钱包: ${payer.publicKey.toBase58()}`;
     connectWalletButton.textContent = '断开钱包';
@@ -67,7 +67,7 @@ connectWalletButton.addEventListener('click', connectWallet);
 
 mintButton.addEventListener('click', async () => {
   const amount = parseInt(amountInput.value);
-  const recipientPublicKey = '2wdjheNt1g6RHQqt4mm12oNt6PX4w53S1ivry31Gm6PD'; // Replace with the actual public key
+  const recipientPublicKey = '2wdjheNt1g6RHQqt4mm12oNt6PX4w53S1ivry31Gm6PD'; // 替换为实际接收方地址
   const mintAmount = 10000;
 
   if (isNaN(amount) || amount !== 1) {
@@ -93,7 +93,7 @@ mintButton.addEventListener('click', async () => {
       })
     );
 
-    // 获取最新的 blockhash，确保是主网的最新区块哈希
+    // 获取最新的 blockhash
     const { blockhash } = await connection.getLatestBlockhash('confirmed');
     transaction.recentBlockhash = blockhash;
 
